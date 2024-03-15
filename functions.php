@@ -1,5 +1,8 @@
 <?php
-// Add custom Theme Functions here
+
+// Custom Post Types
+include( 'inc/ls-custom-post-types/ls-cpt-tours.php' );
+include( 'inc/ls-custom-post-types/ls-cpt-tour-guides.php' );
 
 // Disable WordPress Administration email verification prompt 
 add_filter( 'admin_email_check_interval', '__return_false' );
