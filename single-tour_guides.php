@@ -17,24 +17,50 @@ Template name: Tour Guides Single
         <?php while (have_posts()) : the_post(); ?>
 
             <?php
+
+            /**
+             * Display Tour Guide info and tours. 
+             * Uses ACF fields from both Tour Guides & Tours ACF Field Groups.
+             */
+
+            // Grab ACF fields from Tour Guides field group
+            $ls_tour_guides_first_name = get_field( 'ls_tour_guides_first_name' );
+            $ls_tour_guides_last_name = get_field( 'ls_tour_guides_last_name' );
+            $ls_tour_guides_profile_picture = get_field ( 'ls_tour_guides_profile_picture' );
+            $ls_tour_guides_bio = get_field( 'ls_tour_guides_bio' );
+            $ls_tour_guides_video_button_url = get_field( 'ls_tour_guides_video_button_url' );
+            $ls_tour_guides_read_more_button_url = get_field( 'ls_tour_guides_read_more_button_url' );
+            $ls_tour_guides_assigned_tours = get_field( 'ls_tour_guides_assigned_tours' );
+
+            // Begin Shortcodes
             $shortcodes = '';
             $shortcodes .= '[gap height="30px"]';
             $shortcodes .= '[row style="collapse"]';
 
+            // Tour Guide Profile Picture
             $shortcodes .= '[col span="3" span__sm="12"]';
-            $shortcodes .= '[ux_image id="959"]';
+            $shortcodes .= '[ux_image id="' . $ls_tour_guides_profile_picture . '"]';
             $shortcodes .= '[/col]';
         
+            // Tour Guide Name and Bio
             $shortcodes .= '[col span="9" span__sm="12" padding="0px 0px 0px 50px" padding__sm="0px 20px 0px 20px" color="light"]';
             $shortcodes .= '[ux_text font_size="1.15"]';
-            $shortcodes .= '<h2>Taylor Halverson</h2>';
+            $shortcodes .= '<h2>' . $ls_tour_guides_first_name . ' ' . $ls_tour_guides_last_name . '</h2>';
             $shortcodes .= '[/ux_text]';
             $shortcodes .= '[divider width="100%" height="1px"]';
-            $shortcodes .= '<p>Taylor Halverson is a world class tour leader. He’s led tour groups to countries around the world (including the Middle East, Central America, India, China, and Europe).&nbsp;He is an expert in world history, world civilization, world cultures, and world religions, having taught these subject at the university for years. He loves designing and delivering experiences that unfold the beauties of this incredible world to enthusiastic learners.</p>';
-            $shortcodes .= '<p>He has PhDs in Biblical Studies (emphasis in Judaism and Christianity in Antiquity) and Instructional Technology (emphasis in learning design). He’s been traveling to and studying the Holy Land and the Bible for three decades. Taylor loves people and loves learning and teaching on site.</p>';
-            $shortcodes .= '[button text="Video of Taylor Teaching" padding="7px 30px 7px 30px" link="https://youtu.be/RWUASBxV27w?si=0WoS4vMzRympntaw" target="_blank"]';
-            $shortcodes .= '[button text="Read More About Taylor" color="white" style="outline" padding="7px 30px 7px 30px" link="https://taylorhalverson.com/bio-summary/" target="_blank"]';
+            $shortcodes .= $ls_tour_guides_bio;
+
+            // Add a video button if the URL is not empty
+            if (!empty($ls_tour_guides_video_button_url)) {
+                $shortcodes .= '[button text="Video of ' . $ls_tour_guides_first_name . '" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_video_button_url . '" target="_blank"]';
+            }
+
+            // Add a read more button if the URL is not empty
+            if (!empty($ls_tour_guides_read_more_button_url)) {
+                $shortcodes .= '[button text="Read More About ' . $ls_tour_guides_first_name . '" color="white" style="outline" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_read_more_button_url . '" target="_blank"]';
+            }
         
+            // Display Assigned Tours
             $shortcodes .= '<h4 class="mb-half">Scheduled Trips</h4>';
             $shortcodes .= '[divider width="100%" height="1px" margin="0.4em"]';
         
