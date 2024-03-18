@@ -17,6 +17,7 @@ Template name: Tour Guides Single
             <?php
             /**
              * Display Tour Guide info and tours. 
+             * 
              * Uses ACF fields from Tour Guides field group. Loops through the tour guide's
              * assigned tours and displays them.
              */
@@ -29,8 +30,6 @@ Template name: Tour Guides Single
             $ls_tour_guides_video_button_url     = get_field( 'ls_tour_guides_video_button_url' );
             $ls_tour_guides_read_more_button_url = get_field( 'ls_tour_guides_read_more_button_url' );
             $ls_tour_guides_assigned_tours       = get_field( 'ls_tour_guides_assigned_tours' );
-
-            // TODO: Query tours assigned to this tour guide and display them
 
             // Begin Shortcodes
             $shortcodes = '';
@@ -60,7 +59,7 @@ Template name: Tour Guides Single
                 $shortcodes .= '[button text="Read More About ' . $ls_tour_guides_first_name . '" color="white" style="outline" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_read_more_button_url . '" target="_blank"]';
             }
         
-            // Display Assigned Tours
+            // Display Assigned Tours if any
             if( $ls_tour_guides_assigned_tours ) {
                 
                 $shortcodes .= '<h4 class="mb-half">Scheduled Trips</h4>';
