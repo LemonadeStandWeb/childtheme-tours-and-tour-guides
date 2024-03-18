@@ -17,7 +17,8 @@ Template name: Tour Guides Single
             <?php
             /**
              * Display Tour Guide info and tours. 
-             * Uses ACF fields from both Tour Guides & Tours ACF Field Groups.
+             * Uses ACF fields from Tour Guides field group. Loops through the tour guide's
+             * assigned tours and displays them.
              */
 
             // Grab ACF fields from Tour Guides field group
@@ -73,7 +74,7 @@ Template name: Tour Guides Single
                     $ls_tours_start_date          = new DateTime(get_field('ls_tours_start_date', $tour->ID));
                     $ls_tours_end_date            = new DateTime(get_field('ls_tours_end_date', $tour->ID));
 
-                    // Format the date to match the original design (M d - M d, Y )
+                    // Format the date to match the original design ( M d - M d, Y )
                     $ls_tours_formatted_start_date = $ls_tours_start_date->format('M d');
                     $ls_tours_formatted_end_date = $ls_tours_end_date->format('M d, Y');
 
