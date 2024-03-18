@@ -23,13 +23,17 @@ Template name: Tour Guides Single
              */
 
             // Grab ACF fields from Tour Guides field group
-            $ls_tour_guides_first_name           = get_field( 'ls_tour_guides_first_name' );
-            $ls_tour_guides_last_name            = get_field( 'ls_tour_guides_last_name' );
-            $ls_tour_guides_profile_picture      = get_field( 'ls_tour_guides_profile_picture' );
-            $ls_tour_guides_bio                  = get_field( 'ls_tour_guides_bio' );
-            $ls_tour_guides_video_button_url     = get_field( 'ls_tour_guides_video_button_url' );
-            $ls_tour_guides_read_more_button_url = get_field( 'ls_tour_guides_read_more_button_url' );
-            $ls_tour_guides_assigned_tours       = get_field( 'ls_tour_guides_assigned_tours' );
+            $ls_tour_guides_first_name                = get_field( 'ls_tour_guides_first_name' );
+            $ls_tour_guides_last_name                 = get_field( 'ls_tour_guides_last_name' );
+            $ls_tour_guides_profile_picture           = get_field( 'ls_tour_guides_profile_picture' );
+            $ls_tour_guides_bio                       = get_field( 'ls_tour_guides_bio' );
+            $ls_tour_guides_primary_cta_button_text   = get_field( 'ls_tour_guides_primary_cta_button_text' );
+            $ls_tour_guides_primary_cta_button_url    = get_field( 'ls_tour_guides_primary_cta_button_url' );
+            $ls_tour_guides_secondary_cta_button_text = get_field( 'ls_tour_guides_secondary_cta_button_text' );
+            $ls_tour_guides_secondary_cta_button_url  = get_field( 'ls_tour_guides_secondary_cta_button_url' );
+            $ls_tour_guides_video_button_url          = get_field( 'ls_tour_guides_video_button_url' );
+            $ls_tour_guides_read_more_button_url      = get_field( 'ls_tour_guides_read_more_button_url' );
+            $ls_tour_guides_assigned_tours            = get_field( 'ls_tour_guides_assigned_tours' );
 
             // Begin Shortcodes
             $shortcodes = '';
@@ -50,13 +54,13 @@ Template name: Tour Guides Single
             $shortcodes .= $ls_tour_guides_bio;
 
             // Add a video button if the URL is not empty
-            if ( !empty($ls_tour_guides_video_button_url) ) {
-                $shortcodes .= '[button text="Video of ' . $ls_tour_guides_first_name . '" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_video_button_url . '" target="_blank"]';
+            if ( !empty($ls_tour_guides_primary_cta_button_text && $ls_tour_guides_primary_cta_button_url) ) {
+                $shortcodes .= '[button text="' . $ls_tour_guides_primary_cta_button_text . '" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_primary_cta_button_url . '" target="_blank"]';
             }
 
             // Add a read more button if the URL is not empty
-            if ( !empty( $ls_tour_guides_read_more_button_url ) ) {
-                $shortcodes .= '[button text="Read More About ' . $ls_tour_guides_first_name . '" color="white" style="outline" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_read_more_button_url . '" target="_blank"]';
+            if ( !empty( $ls_tour_guides_secondary_cta_button_text && $ls_tour_guides_secondary_cta_button_url ) ) {
+                $shortcodes .= '[button text="' . $ls_tour_guides_secondary_cta_button_text . '" color="white" style="outline" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_secondary_cta_button_url . '" target="_blank"]';
             }
         
             // Display Assigned Tours if any
