@@ -53,13 +53,13 @@ Template name: Tour Guides Single
             $shortcodes .= '[divider width="100%" height="1px"]';
             $shortcodes .= $ls_tour_guides_bio;
 
-            // Add a video button if the URL is not empty
-            if ( !empty($ls_tour_guides_primary_cta_button_text && $ls_tour_guides_primary_cta_button_url) ) {
+            // Add the primary CTA button if the text and link are both present
+            if ( ! empty( $ls_tour_guides_primary_cta_button_text && $ls_tour_guides_primary_cta_button_url ) ) {
                 $shortcodes .= '[button text="' . $ls_tour_guides_primary_cta_button_text . '" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_primary_cta_button_url . '" target="_blank"]';
             }
 
-            // Add a read more button if the URL is not empty
-            if ( !empty( $ls_tour_guides_secondary_cta_button_text && $ls_tour_guides_secondary_cta_button_url ) ) {
+            // Add the secondary CTA button if the text and link are both present
+            if ( ! empty( $ls_tour_guides_secondary_cta_button_text && $ls_tour_guides_secondary_cta_button_url ) ) {
                 $shortcodes .= '[button text="' . $ls_tour_guides_secondary_cta_button_text . '" color="white" style="outline" padding="7px 30px 7px 30px" link="' . $ls_tour_guides_secondary_cta_button_url . '" target="_blank"]';
             }
         
