@@ -17,6 +17,7 @@ Template name: Tour Category Archive Page
 
             <?php
 
+            $ls_tours_category_shortcodes = '';
             $ls_tours_category_shortcodes .= '[row h_align="center"]';
 
             $ls_tours_category_shortcodes .= '[col span__sm="12" color="light"]';
