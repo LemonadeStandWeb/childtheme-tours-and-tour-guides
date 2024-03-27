@@ -7,6 +7,43 @@ Template name: Tour Single
 <!-- Bring in the transparent header with light text -->
 <?php get_template_part('templates/parts/ls-cpt-header'); ?>
 
+<style>
+    /* Base class for shared properties */
+    .wtrvl-checkout_button {
+        border: 0px;
+        cursor: pointer;
+        text-decoration: none;
+        text-transform: capitalize;
+        display: inline-block;
+    }
+
+    /* Unique classes for Poppins style */
+    .poppins-style {
+        background-color: #daa425;
+        color: #ffffff;
+        border-radius: 5px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+        padding: 13px 24px;
+        text-align: center;
+        line-height: 14px;
+    }
+
+    /* Unique classes for Playfair Display style */
+    .playfair-style {
+        color: #daa425;
+        font-family: 'Playfair Display', sans-serif;
+        font-weight: 500;
+        font-size: 25px;
+        padding: 0;
+        text-align: left;
+        display: block;
+        /* Override default display for this specific style */
+    }
+</style>
+
 <main id="main" class="<?php flatsome_main_classes(); ?>">
 
     <?php do_action('flatsome_before_page'); ?>
@@ -36,7 +73,7 @@ Template name: Tour Single
             }
 
             /**
-             * Displays the tour guides and their information.
+             * Displays the assigned tour guides and their information.
              *
              * @param array $tour_guides An array of tour guide objects.
              * @return string The shortcode output of the tour guides' information.
@@ -196,7 +233,7 @@ Template name: Tour Single
             }
 
             /**
-             * Displays the content for "What's Included" and "What's Not Included" sections.
+             * Displays the content for "What's Included" and "What's Not Included" sections as well as the blockquote.
              *
              * @return string The shortcode output.
              */
@@ -353,31 +390,9 @@ Template name: Tour Single
             $ls_tours_shortcodes .= '</h3>';
             $ls_tours_shortcodes .= '[divider width="100%" height="1px"]';
             $ls_tours_shortcodes .= '[ux_html]';
-            $ls_tours_shortcodes .= '
-            <button 
-            class="wtrvl-checkout_button" 
-            id="wetravel_button_widget" 
-            data-env="https://www.wetravel.com 
-            data-version="v0.3" 
-            data-uid="746955" 
-            data-uuid="89148139" 
-            href=https://www.wetravel.com/checkout_embed?uuid=89148139 
-            style="display:block; 
-            color:#daa425;
-            border: 0px;
-            border-radius: 0px;    
-            font-family: \'Playfair Display\', sans-serif;
-            text-transform:capitalize;
-            font-weight: 500;
-            font-size: 25px;
-            padding: 0;
-            text-decoration: none;
-            text-align: left; 
-            cursor: pointer;">
-            Book Now&emsp;
-            </button> 
-            <link href=https://fonts.googleapis.com/css?family=Poppins rel="stylesheet"> 
-            <script src=https://cdn.wetravel.com/widgets/embed_checkout.js></script>';
+            $ls_tours_shortcodes .= '<button class="wtrvl-checkout_button playfair-style" id="wetravel_button_widget" data-env="https://www.wetravel.com data-version="v0.3" data-uid="746955" data-uuid="89148139" href=https://www.wetravel.com/checkout_embed?uuid=89148139>Book Now&emsp;</button>'; 
+            $ls_tours_shortcodes .= '<link href=https://fonts.googleapis.com/css?family=Poppins rel="stylesheet">';
+            $ls_tours_shortcodes .= '<script src=https://cdn.wetravel.com/widgets/embed_checkout.js></script>';
             $ls_tours_shortcodes .= '[/ux_html]';
             $ls_tours_shortcodes .= '[/col_inner]';
             $ls_tours_shortcodes .= '[/row_inner]';
@@ -439,29 +454,7 @@ Template name: Tour Single
 
             $ls_tours_shortcodes .= '[ux_html]';
             $ls_tours_shortcodes .= '<button 
-            class="wtrvl-checkout_button" 
-            id="wetravel_button_widget" 
-            data-env="https://www.wetravel.com" 
-            data-version="v0.3" 
-            data-uid="746955" 
-            data-uuid="89148139" 
-            href="https://www.wetravel.com/checkout_embed?uuid=89148139" 
-            style="background-color:#daa425;
-            color:#ffffff;
-            border: 0px;
-            border-radius: 5px;
-            font-family: \'Poppins\', sans-serif;
-            font-weight: 400;
-            font-size: 14px;
-            -webkit-font-smoothing: antialiased;
-            text-transform: capitalize;
-            padding: 13px 24px;
-            text-decoration: none;
-            text-align: center;
-            line-height: 14px;
-            display: inline-block; 
-            cursor: pointer;">Book Now
-            </button> 
+            class="wtrvl-checkout_button poppins-style" id="wetravel_button_widget" data-env="https://www.wetravel.com" data-version="v0.3" data-uid="746955" data-uuid="89148139" href="https://www.wetravel.com/checkout_embed?uuid=89148139" >Book Now</button> 
             <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"> 
             <script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>';
             $ls_tours_shortcodes .= '[/ux_html]';
