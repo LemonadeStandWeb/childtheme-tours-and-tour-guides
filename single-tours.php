@@ -7,43 +7,6 @@ Template name: Tour Single
 <!-- Bring in the transparent header with light text -->
 <?php get_template_part('templates/parts/ls-cpt-header'); ?>
 
-<style>
-    /* Base class for shared properties */
-    .wtrvl-checkout_button {
-        border: 0px;
-        cursor: pointer;
-        text-decoration: none;
-        text-transform: capitalize;
-        display: inline-block;
-    }
-
-    /* Unique classes for Poppins style */
-    .poppins-style {
-        background-color: #daa425;
-        color: #ffffff;
-        border-radius: 5px;
-        font-family: 'Poppins', sans-serif;
-        font-weight: 400;
-        font-size: 14px;
-        -webkit-font-smoothing: antialiased;
-        padding: 13px 24px;
-        text-align: center;
-        line-height: 14px;
-    }
-
-    /* Unique classes for Playfair Display style */
-    .playfair-style {
-        color: #daa425;
-        font-family: 'Playfair Display', sans-serif;
-        font-weight: 500;
-        font-size: 25px;
-        padding: 0;
-        text-align: left;
-        display: block;
-        /* Override default display for this specific style */
-    }
-</style>
-
 <main id="main" class="<?php flatsome_main_classes(); ?>">
 
     <?php do_action('flatsome_before_page'); ?>
