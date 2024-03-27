@@ -398,6 +398,8 @@ Template name: Tour Single
                     $output .= '<h2>Extensions</h2>';
                     $output .= '[/ux_text]';
 
+                    $output .= '<h4><em>You Can Add Any of These Extensions to Your ' . $tour_name . ' Via the Book Now Link</em></h4>';
+
                     while (have_rows('ls_tours_extensions')) {
                         the_row();
 
@@ -406,7 +408,6 @@ Template name: Tour Single
                         $extension_content       = get_sub_field('ls_tours_repeater_extension_content');
                         $extension_price_content = get_sub_field('ls_tours_repeater_extension_price_content');
 
-                        $output .= '<h4><em>You Can Add Any of These Extensions to Your ' . $tour_name . ' Via the Book Now Link</em></h4>';
                         $output .= '<h4><a href="' . $extension_link . '"><strong>' . $extension_title . '</strong></a></h4>';
                         $output .= '<p>' . $extension_content . '</p>';
                         $output .= '<p><em>' . $extension_price_content . '</em></p>';
