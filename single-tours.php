@@ -467,6 +467,8 @@ Template name: Tour Single
                 )
             ));
 
+            //TODO: Clean up variables and doc
+
             /**
              * Display Tour information using ACF Fields.
              * 
