@@ -29,7 +29,7 @@ function ls_create_tour_guides() {
 		'capability_type'	  => 'post',	
 		'hierarchical'        => false,	
 		'supports'            => array( 'title', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'editor' ),
-		'taxonomies'		  => array( 'tour_guide_type' ),
+		'taxonomies'		  => array( 'tour-guide-category' ),
 		'menu_position'       => 6,
 		'exclude_from_search' => false,
 		'show_ui'             => true,
@@ -73,7 +73,7 @@ function ls_create_tour_guide_taxonomies() {
 		'show_in_rest' => true,
 	);
 
-	register_taxonomy( 'tour_guide_category', array( 'tour_guides' ), $args ); 
+	register_taxonomy( 'tour-guide-category', array( 'tour_guides' ), $args ); 
 }
 add_action( 'init', 'ls_create_tour_guide_taxonomies', 0 );
 

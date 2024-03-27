@@ -29,7 +29,7 @@ function ls_create_tours() {
 		'capability_type'	  => 'post',	
 		'hierarchical'        => false,	
 		'supports'            => array( 'title', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'editor' ),
-		'taxonomies'		  => array( 'tour_type' ),
+		'taxonomies'		  => array( 'tour-category' ),
 		'menu_position'       => 6,
 		'exclude_from_search' => false,
 		'show_ui'             => true,
@@ -69,11 +69,11 @@ function ls_create_tour_taxonomies() {
 		'show_ui'           => true,
 		'show_admin_column' => true,
 		'query_var'         => true,
-		'rewrite'           => array( 'slug' => 'tours_category' ), 
+		'rewrite'           => array( 'slug' => 'tour-category' ), 
 		'show_in_rest' => true,
 	);
 
-	register_taxonomy( 'tour_category', array( 'tours' ), $args ); 
+	register_taxonomy( 'tour-category', array( 'tours' ), $args ); 
 }
 add_action( 'init', 'ls_create_tour_taxonomies', 0 );
 
