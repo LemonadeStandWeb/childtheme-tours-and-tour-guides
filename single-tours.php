@@ -54,22 +54,32 @@ Template name: Tour Single
 
             <?php
             /**
-             * Trims the given tour guide bio to a specified limit and adds ellipsis if necessary.
+             * Displays the hero section for the tour.
              *
-             * @param string $text The text to be trimmed.
-             * @param int $limit The maximum number of characters to keep.
-             * @param string $more_text The text to be appended if the original text is trimmed.
-             * @return string The trimmed text.
+             * @param string $hero_image The URL of the hero image.
+             * @param string $tour_name The name of the tour.
+             * @param string $start_date The start date of the tour.
+             * @param string $end_date The end date of the tour.
+             * @return string The shortcode output for the hero section.
              */
-            function ls_tours_trim_bio($text, $limit = 100, $more_text = '...')
+            function ls_tours_display_hero_section($hero_image, $tour_name, $start_date, $end_date)
             {
-                if (mb_strlen($text) > $limit) {
-                    $text = mb_substr($text, 0, $limit);
-                    $text = mb_substr($text, 0, mb_strrpos($text, ' '));
-                    $text = $text . $more_text;
-                }
+                $output = '';
 
-                return $text;
+                $output .= '[section bg="' . $hero_image . '" bg_overlay="rgba(0,0,0,.5)" bg_pos="4% 28%" dark="true" height="70vh"]';
+                $output .= '[gap height="92px"]';
+                $output .= '[row]';
+                $output .= '[col span="6" span__sm="12"]';
+                $output .= '[ux_text font_size="1.7"]';
+                $output .= '<h1 class="mb-half">' . $tour_name . '</h1>';
+                $output .= '[/ux_text]';
+                $output .= '[divider width="100%" height="1px" color="rgba(255, 255, 255, 0.5)"]';
+                $output .= '<h4>' . $start_date . ' - ' . $end_date . '</h4>';
+                $output .= '[/col]';
+                $output .= '[/row]';
+                $output .= '[/section]';
+
+                return $output;
             }
 
             /**
@@ -110,6 +120,61 @@ Template name: Tour Single
                 }
 
                 $output .= '[/row_inner]';
+
+                return $output;
+            }
+
+            /**
+             * Displays the sticky navigation bar for the tours page.
+             *
+             * @param string $itinerary The itinerary of the tour.
+             * @param string $whats_included The list of what's included in the tour.
+             * @param string $whats_not_included The list of what's not included in the tour.
+             * @param string $price_per_person The price per person for the tour.
+             * @param string $single_supplement_price The price for single supplement.
+             * @param string $extensions The list of tour extensions.
+             * @return string The shortcode output of the sticky navigation bar.
+             */
+            function ls_tours_display_sticky_navbar($itinerary, $whats_included, $whats_not_included, $price_per_person, $single_supplement_price, $extensions, $uuid = null)
+            {
+                $output = '';
+                $output .= '[col span="4" span__sm="12" span__md="10" class="sticky-column"]';
+                $output .= '[row_inner class="sticky"]';
+                $output .= '[col_inner span__sm="12"]';
+
+                $output .= '<h3><a href="#overview">Overview</a></h3>';
+                $output .= '[divider width="100%" height="1px"]';
+
+                if (!empty($itinerary)) {
+                    $output .= '<h3><a href="#itinerary">Itinerary</a></h3>';
+                    $output .= '[divider width="100%" height="1px"]';
+                }
+
+                if (!empty($whats_included) || !empty($whats_not_included)) {
+                    $output .= '<h3><a href="#whatsincluded">What\'s Included</a></h3>';
+                    $output .= '[divider width="100%" height="1px"]';
+                }
+
+                if (!empty($price_per_person) || !empty($single_supplement_price)) {
+                    $output .= '<h3><a href="#pricing">Pricing</a></h3>';
+                    $output .= '[divider width="100%" height="1px"]';
+                }
+
+                if (!empty($extensions)) {
+                    $output .= '<h3><a href="#extensions">Extensions</a></h3>';
+                    $output .= '[divider width="100%" height="1px"]';
+                }
+
+                $output .= '[ux_html]';
+                $output .= '<button class="wtrvl-checkout_button playfair-style" id="wetravel_button_widget" data-env="https://www.wetravel.com data-version="v0.3" data-uid="' . $uuid . '" data-uuid="89148139" href=https://www.wetravel.com/checkout_embed?uuid=' . $uuid . '>Book Now&emsp;</button>';
+                $output .= '<link href=https://fonts.googleapis.com/css?family=Poppins rel="stylesheet">';
+                $output .= '<script src=https://cdn.wetravel.com/widgets/embed_checkout.js></script>';
+                $output .= '[/ux_html]';
+
+                $output .= '[/col_inner]';
+                $output .= '[/row_inner]';
+                $output .= '[/col]';
+
 
                 return $output;
             }
@@ -177,13 +242,13 @@ Template name: Tour Single
             }
 
             /**
-             * Displays additional information for a tour day.
+             * Displays meal, clothing, drive time, and walking length information for a tour day.
              *
              * @param string $meals The value of the "Breakfast, Lunch & Dinner Included" field.
              * @param string $clothing The note on clothing for the day.
              * @param string $drive_time The estimated drive time for the day.
              * @param string $walking_length The estimated walking length for the day.
-             * @return string The HTML output of the additional information.
+             * @return string The shortcode output of the additional information.
              */
             function ls_tours_display_additional_information($meals, $clothing, $drive_time, $walking_length)
             {
@@ -297,6 +362,132 @@ Template name: Tour Single
             }
 
             /**
+             * Displays pricing and booking information for tours.
+             *
+             * @param string $price_per_person The price per person for the tour.
+             * @param string $single_supplement_price The price for single supplement (if applicable).
+             * @param string $wetravel_button_uuid The UUID for the WeTravel button.
+             * @return string The shortcode output for displaying pricing and booking information.
+             */
+            function ls_tours_display_pricing_and_booking($price_per_person, $single_supplement_price, $wetravel_button_uuid)
+            {
+
+                if ($price_per_person != '$0' || $single_supplement_price != '$0') {
+                    $output = '';
+
+                    $output .= '[gap height="100px"]';
+                    $output .= '[scroll_to title="pricing" bullet="false"]';
+                    $output .= '[gap height="40px"]';
+
+                    $output .= '[ux_text font_size="1.4"]';
+                    $output .= '<h2>Pricing & Booking</h2>';
+                    $output .= '[/ux_text]';
+
+                    $output .= '[row_inner col_style="divided"]';
+                    $output .= '[col_inner span="6" span__sm="12"]';
+
+                    $output .= '[ux_text font_size="2"]';
+                    $output .= '<h3 class="mb-0">' . $price_per_person . '</h3>';
+                    $output .= '[/ux_text]';
+
+                    $output .= '<h6>Per Person Plus Add-ons</h6>';
+
+                    $output .= '[ux_text font_size="0.8" text_color="rgb(0,0,0)"]';
+                    $output .= '<p class="uppercase mb-half"><span style="background-color: #fff; padding:6px"><b>Based on Double Occupancy</b></span></p>';
+                    $output .= '[/ux_text]';
+
+                    if ($single_supplement_price != '$0') {
+                        $output .= '<h6>' . $single_supplement_price . ' Single Supplement</h6>';
+                    }
+
+                    $output .= '[/col_inner]';
+                    $output .= '[/row_inner]';
+
+                    $output .= '[ux_html]';
+                    $output .= '<button class="wtrvl-checkout_button poppins-style" id="wetravel_button_widget" data-env="https://www.wetravel.com" data-version="v0.3" data-uid="' . $wetravel_button_uuid . '" data-uuid="89148139" href="https://www.wetravel.com/checkout_embed?uuid=' . $wetravel_button_uuid . '" >Book Now</button>';
+                    $output .= '<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">';
+                    $output .= '<script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>';
+                    $output .= '[/ux_html]';
+
+                    return $output;
+                }
+            }
+
+            /**
+             * Displays the extensions for a tour.
+             *
+             * @param string $tour_name The name of the tour.
+             * @return string The shortcode output for displaying the tour extensions.
+             */
+            function ls_tours_display_extensions($tour_name)
+            {
+                $output = '';
+
+                if (have_rows('ls_tours_extensions')) {
+                    $output .= '[row_inner style="collapse"]';
+                    $output .= '[col_inner span__sm="12"]';
+
+                    $output .= '[gap height="100px"]';
+
+                    $output .= '[scroll_to title="extensions" bullet="false"]';
+
+                    $output .= '[ux_text font_size="1.4"]';
+                    $output .= '<h2>Extensions</h2>';
+                    $output .= '[/ux_text]';
+
+                    while (have_rows('ls_tours_extensions')) {
+                        the_row();
+
+                        $extension_link          = get_sub_field('ls_tours_repeater_extension_link');
+                        $extension_title         = get_sub_field('ls_tours_repeater_title');
+                        $extension_content       = get_sub_field('ls_tours_repeater_extension_content');
+                        $extension_price_content = get_sub_field('ls_tours_repeater_extension_price_content');
+
+                        $output .= '<h4><em>You Can Add Any of These Extensions to Your ' . $tour_name . ' Via the Book Now Link</em></h4>';
+                        $output .= '<h4><a href="' . $extension_link . '"><strong>' . $extension_title . '</strong></a></h4>';
+                        $output .= '<p>' . $extension_content . '</p>';
+                        $output .= '<p><em>' . $extension_price_content . '</em></p>';
+                    }
+
+                    $output .= '[/col_inner]';
+                    $output .= '[/row_inner]';
+                }
+
+                return $output;
+            }
+
+            /**
+             * Formats the given price as a currency value.
+             *
+             * @param string $price The price to format.
+             * @return string The formatted currency value.
+             */
+            function ls_tours_currency_format($price)
+            {
+                $price = floatval($price);
+                return '$' . number_format($price, 0, '.', ',');
+            }
+
+            /**
+             * Trims the given tour guide bio to a specified limit and adds ellipsis if necessary.
+             *
+             * @param string $text The text to be trimmed.
+             * @param int $limit The maximum number of characters to keep.
+             * @param string $more_text The text to be appended if the original text is trimmed.
+             * @return string The trimmed text.
+             */
+            function ls_tours_trim_bio($text, $limit = 100, $more_text = '...')
+            {
+                if (mb_strlen($text) > $limit) {
+                    $text = mb_substr($text, 0, $limit);
+                    $text = mb_substr($text, 0, mb_strrpos($text, ' '));
+                    $text = $text . $more_text;
+                }
+
+                return $text;
+            }
+
+            /**
              * Retrieves tour guides assigned to the current tour guide.
              *
              * @return array An array of tour guide posts.
@@ -332,168 +523,78 @@ Template name: Tour Single
              * @var string $ls_tours_extensions                           ACF Repeater      The extensions available for the tour guide.
              * @var string $ls_tours_shortcodes                                             The shortcodes for the tour guide.
              */
-            $ls_tours_name                                = get_field('ls_tours_name');
-            $ls_tours_hero_image                          = get_field('ls_tours_hero_image');
-            $ls_tours_do_we_have_the_tour_dates_available = get_field('ls_tours_do_we_have_the_tour_dates_available');
-            $ls_tours_start_date                          = get_field('ls_tours_start_date');
-            $ls_tours_start_date_modified                 = date('F j', strtotime($ls_tours_start_date));
-            $ls_tours_end_date                            = get_field('ls_tours_end_date');
-            $ls_tours_date_placeholder                    = get_field('ls_tours_date_placeholder');
-            $ls_tours_do_we_have_images_for_each_tour_day = get_field('ls_tours_do_we_have_images_for_each_tour_day');
-            $ls_tours_overview_content                    = get_field('ls_tours_overview_content');
-            $ls_tours_itinerary                           = get_field('ls_tours_itinerary');
-            $ls_tours_whats_included                      = get_field('ls_tours_whats_included');
-            $ls_tours_whats_not_included                  = get_field('ls_tours_whats_not_included');
-            $ls_tours_price_per_person                    = get_field('ls_tours_price_per_person');
-            $ls_tours_book_now_button_url                 = get_field('ls_tours_book_now_button_url');
-            $ls_tours_single_supplement_price             = get_field('ls_tours_single_supplement_price');
-            $ls_tours_extensions                          = get_field('ls_tours_extensions');
-            $ls_tours_current_tour_id                     = get_the_ID();
-            $ls_tours_assigned_tour_guide                 = get_field('ls_tour_guides_assigned_tours', $ls_tours_current_tour_id);
-            $ls_tours_shortcodes                          = '';
+            $ls_tours_name                                    = get_field('ls_tours_name');
+            $ls_tours_hero_image                              = get_field('ls_tours_hero_image');
+            $ls_tours_do_we_have_the_tour_dates_available     = get_field('ls_tours_do_we_have_the_tour_dates_available');
+            $ls_tours_start_date                              = get_field('ls_tours_start_date');
+            $ls_tours_start_date_modified                     = date('F j', strtotime($ls_tours_start_date));
+            $ls_tours_end_date                                = get_field('ls_tours_end_date');
+            $ls_tours_date_placeholder                        = get_field('ls_tours_date_placeholder');
+            $ls_tours_do_we_have_images_for_each_tour_day     = get_field('ls_tours_do_we_have_images_for_each_tour_day');
+            $ls_tours_overview_content                        = get_field('ls_tours_overview_content');
+            $ls_tours_itinerary                               = get_field('ls_tours_itinerary');
+            $ls_tours_whats_included                          = get_field('ls_tours_whats_included');
+            $ls_tours_whats_not_included                      = get_field('ls_tours_whats_not_included');
+            $ls_tours_wetravel_button_uuid                    = get_field('ls_tours_wetravel_button_uuid');
 
-            // Build the Hero Section
-            $ls_tours_shortcodes .= '[section bg="' . $ls_tours_hero_image . '" bg_overlay="rgba(0,0,0,.5)" bg_pos="4% 28%" dark="true" height="70vh"]';
-            $ls_tours_shortcodes .= '[gap height="92px"]';
-            $ls_tours_shortcodes .= '[row]';
-            $ls_tours_shortcodes .= '[col span="6" span__sm="12"]';
-            $ls_tours_shortcodes .= '[ux_text font_size="1.7"]';
-            $ls_tours_shortcodes .= '<h1 class="mb-half">' . $ls_tours_name . '</h1>';
-            $ls_tours_shortcodes .= '[/ux_text]';
-            $ls_tours_shortcodes .= '[divider width="100%" height="1px" color="rgba(255, 255, 255, 0.5)"]';
-            $ls_tours_shortcodes .= '<h4>' . $ls_tours_start_date_modified . ' - ' . $ls_tours_end_date . '</h4>';
-            $ls_tours_shortcodes .= '[/col]';
-            $ls_tours_shortcodes .= '[/row]';
-            $ls_tours_shortcodes .= '[/section]';
+            $ls_tours_price_per_person                        = get_field('ls_tours_price_per_person');
+            $ls_tours_single_supplement_price                 = get_field('ls_tours_single_supplement_price');
+            $ls_tours_price_per_person_currency_format        = ls_tours_currency_format($ls_tours_price_per_person);
+            $ls_tours_single_supplement_price_currency_format = ls_tours_currency_format($ls_tours_single_supplement_price);
 
-            // Overview Scroll-To
+            $ls_tours_extensions                              = get_field('ls_tours_extensions');
+            $ls_tours_repeater_extension_link                 = get_sub_field('ls_tours_repeater_extension_link');
+            $ls_tours_repeater_title                          = get_sub_field('ls_tours_repeater_title');
+            $ls_tours_repeater_extension_content              = get_sub_field('ls_tours_repeater_extension_content');
+            $ls_tours_repeater_extension_price_content        = get_sub_field('ls_tours_repeater_extension_price_content');
+            $ls_tours_current_tour_id                         = get_the_ID();
+            $ls_tours_assigned_tour_guide                     = get_field('ls_tour_guides_assigned_tours', $ls_tours_current_tour_id);
+            $ls_tours_shortcodes                              = '';
+
+            // Display the hero section
+            $ls_tours_shortcodes .= ls_tours_display_hero_section($ls_tours_hero_image, $ls_tours_name, $ls_tours_start_date_modified, $ls_tours_end_date);
+
+            // Opening tags for the section with dynamic functionality
             $ls_tours_shortcodes .= '[scroll_to title="overview" bullet="false"]';
-
-            // 4 Column Sticky Navigation
             $ls_tours_shortcodes .= '[section bg_color="rgb(24, 24, 24)" dark="true" padding="80px"]';
             $ls_tours_shortcodes .= '[gap height="33px"]';
             $ls_tours_shortcodes .= '[row]';
-            $ls_tours_shortcodes .= '[col span="4" span__sm="12" span__md="10" class="sticky-column"]';
-            $ls_tours_shortcodes .= '[row_inner class="sticky"]';
-            $ls_tours_shortcodes .= '[col_inner span__sm="12"]';
-            $ls_tours_shortcodes .= '<h3><a href="#overview">Overview</a></h3>';
-            $ls_tours_shortcodes .= '[divider width="100%" height="1px"]';
-            $ls_tours_shortcodes .= '<h3><a href="#itinerary">Itinerary</a></h3>';
-            $ls_tours_shortcodes .= '[divider width="100%" height="1px"]';
-            $ls_tours_shortcodes .= '<h3><a href="#whatsincluded">What\'s Included</a></p>';
-            $ls_tours_shortcodes .= '</h3>';
-            $ls_tours_shortcodes .= '[divider width="100%" height="1px"]';
-            $ls_tours_shortcodes .= '<h3><a href="#pricing">Pricing</a><br />';
-            $ls_tours_shortcodes .= '</h3>';
-            $ls_tours_shortcodes .= '[divider width="100%" height="1px"]';
-            $ls_tours_shortcodes .= '<h3><a href="#extensions">Extensions</a></p>';
-            $ls_tours_shortcodes .= '</h3>';
-            $ls_tours_shortcodes .= '[divider width="100%" height="1px"]';
-            $ls_tours_shortcodes .= '[ux_html]';
-            $ls_tours_shortcodes .= '<button class="wtrvl-checkout_button playfair-style" id="wetravel_button_widget" data-env="https://www.wetravel.com data-version="v0.3" data-uid="746955" data-uuid="89148139" href=https://www.wetravel.com/checkout_embed?uuid=89148139>Book Now&emsp;</button>'; 
-            $ls_tours_shortcodes .= '<link href=https://fonts.googleapis.com/css?family=Poppins rel="stylesheet">';
-            $ls_tours_shortcodes .= '<script src=https://cdn.wetravel.com/widgets/embed_checkout.js></script>';
-            $ls_tours_shortcodes .= '[/ux_html]';
-            $ls_tours_shortcodes .= '[/col_inner]';
-            $ls_tours_shortcodes .= '[/row_inner]';
-            $ls_tours_shortcodes .= '[/col]';
 
-            // 8 column Content
+            // Display 4 column sticky navbar
+            $ls_tours_shortcodes .= ls_tours_display_sticky_navbar($ls_tours_itinerary, $ls_tours_whats_included, $ls_tours_whats_not_included, $ls_tours_price_per_person, $ls_tours_single_supplement_price, $ls_tours_extensions, $ls_tours_wetravel_button_uuid);
+
+
+            // Display Overview content
             $ls_tours_shortcodes .= '[col span="8" span__sm="12" padding="0px 0px 0px 50px"]';
+
             $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
             $ls_tours_shortcodes .= '<h2>Overview</h2>';
             $ls_tours_shortcodes .= '[/ux_text]';
             $ls_tours_shortcodes .= '<p>' . $ls_tours_overview_content . '</p>';
             $ls_tours_shortcodes .= '[gap height="15px"]';
-
             $ls_tours_shortcodes .= ls_tours_display_tour_guides($ls_tour_guides);
-
             $ls_tours_shortcodes .= '[gap height="100px"]';
+            // End Overview content
 
+            // Display Itinerary content
             $ls_tours_shortcodes .= '[scroll_to title="itinerary" bullet="false"]';
-
             $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
             $ls_tours_shortcodes .= '<h2>Itinerary</h2>';
             $ls_tours_shortcodes .= '[/ux_text]';
-
             $ls_tours_shortcodes .= ls_tours_display_itinerary();
+            // End Itinerary content
 
+            // Display What's Included content
             $ls_tours_shortcodes .= '[scroll_to title="whatsincluded" bullet="false"]';
-
             $ls_tours_shortcodes .= '[gap height="40px"]';
-
             $ls_tours_shortcodes .= ls_tours_display_whats_included();
+            // End What's Included content
 
-            $ls_tours_shortcodes .= '[gap height="100px"]';
+            // Display Pricing and Booking content
+            $ls_tours_shortcodes .= ls_tours_display_pricing_and_booking($ls_tours_price_per_person_currency_format, $ls_tours_single_supplement_price_currency_format, $ls_tours_wetravel_button_uuid);
 
-            // Pricing & Booking section
-            $ls_tours_shortcodes .= '[scroll_to title="pricing" bullet="false"]';
-            $ls_tours_shortcodes .= '[gap height="40px"]';
-
-            $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
-            $ls_tours_shortcodes .= '<h2>Pricing & Booking</h2>';
-            $ls_tours_shortcodes .= '[/ux_text]';
-
-            $ls_tours_shortcodes .= '[row_inner col_style="divided"]';
-            $ls_tours_shortcodes .= '[col_inner span="6" span__sm="12"]';
-
-            $ls_tours_shortcodes .= '[ux_text font_size="2"]';
-            $ls_tours_shortcodes .= '<h3 class="mb-0">$3,920</h3>';
-            $ls_tours_shortcodes .= '[/ux_text]';
-
-            $ls_tours_shortcodes .= '<h6>Per Person Plus Add-ons</h6>';
-
-            $ls_tours_shortcodes .= '[ux_text font_size="0.8" text_color="rgb(0,0,0)"]';
-            $ls_tours_shortcodes .= '<p class="uppercase mb-half"><span style="background-color: #fff; padding:6px"><b>Based on Double Occupancy</b></span></p>';
-            $ls_tours_shortcodes .= '[/ux_text]';
-
-            $ls_tours_shortcodes .= '<h6>$950 Single Supplement</h6>';
-
-            $ls_tours_shortcodes .= '[/col_inner]';
-            $ls_tours_shortcodes .= '[/row_inner]';
-
-            $ls_tours_shortcodes .= '[ux_html]';
-            $ls_tours_shortcodes .= '<button 
-            class="wtrvl-checkout_button poppins-style" id="wetravel_button_widget" data-env="https://www.wetravel.com" data-version="v0.3" data-uid="746955" data-uuid="89148139" href="https://www.wetravel.com/checkout_embed?uuid=89148139" >Book Now</button> 
-            <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"> 
-            <script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>';
-            $ls_tours_shortcodes .= '[/ux_html]';
-            // End Pricing & Booking section
-
-            // Extensions section
-            $ls_tours_shortcodes .= '[row_inner style="collapse"]';
-            $ls_tours_shortcodes .= '[col_inner span__sm="12"]';
-
-            $ls_tours_shortcodes .= '[gap height="100px"]';
-
-            $ls_tours_shortcodes .= '[scroll_to title="extensions" bullet="false"]';
-
-            $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
-            $ls_tours_shortcodes .= '<h2>Extensions</h2>';
-            $ls_tours_shortcodes .= '[/ux_text]';
-
-            $ls_tours_shortcodes .= '<h4><em>You Can Add Any of These Extensions to Your Israel Tour Via the Book Now Link</em></h4>';
-            $ls_tours_shortcodes .= '<h4><a href="https://travefy.com/trip/6yw9rqec4hasqz2aunu352vjewuuamq"><strong>3 Day Egypt Splendors</strong></a></h4>';
-            $ls_tours_shortcodes .= '<p>Great Pyramids; Grand Egyptian Museum; Islamic Cairo</p>';
-            $ls_tours_shortcodes .= '<p><em>$1,795 pp dbl occp</em></p>';
-            $ls_tours_shortcodes .= '<h4><a href="https://travefy.com/trip/6yw9rqectxywqz2a7k9f5a4zs4g5laa"><strong>7 Day Egypt Ultimate Egypt</strong></a></h4>';
-            $ls_tours_shortcodes .= '<p>Great Pyramids; Grand Egyptian Museum; Islamic Cairo; Luxury Nile Cruise; Aswan; Karnak; Luxor; Valley of the Kings.</p>';
-            $ls_tours_shortcodes .= '<p><em>$3,695 pp dbl occp</em></p>';
-            $ls_tours_shortcodes .= '<h4><a href="https://travefy.com/trip/6yw9rqectlbwqz2ayj3f63v2g2khyva"><strong>3 Day Jordan</strong></a></h4>';
-            $ls_tours_shortcodes .= '<p>Jordan: Aqaba; Petra; Wadi Rum</p>';
-            $ls_tours_shortcodes .= '<p><em>$1,795 pp dbl occp</em></p>';
-            $ls_tours_shortcodes .= '<h4><a href="https://travefy.com/trip/6yw9rquea84wqz2am7f7vgl2wkffqcq"><strong>3 Day Jordan + 3 Day Egypt</strong></a></h4>';
-            $ls_tours_shortcodes .= '<p>Jordan: Aqaba; Petra; Wadi Rum</p>';
-            $ls_tours_shortcodes .= '<p>Egypt: Great Pyramids; Grand Egyptian Museum; Islamic or Christian Cairo.</p>';
-            $ls_tours_shortcodes .= '<p><em>$3,590 pp dbl occp</em></p>';
-            $ls_tours_shortcodes .= '<h4><a href="https://travefy.com/trip/6yw9rqkel9hsqz2ab6h56drdfsuflba"><strong>3 Day Jordan + 7 Day Egypt</strong></a></h4>';
-            $ls_tours_shortcodes .= '<p>Jordan: Petra; Wadi Rum; Aqaba</p>';
-            $ls_tours_shortcodes .= '<p>Egypt: Great Pyramids; Luxury Nile Cruise; Aswan; Karnak; Luxor; Valley of the Kings.</p>';
-            $ls_tours_shortcodes .= '<p><em>$5,290 pp dbl occp</em></p>';
-
-            $ls_tours_shortcodes .= '[/col_inner]';
-            $ls_tours_shortcodes .= '[/row_inner]';
-            // End Extensions section
+            // Display Extensions content
+            $ls_tours_shortcodes .= ls_tours_display_extensions($ls_tours_name);
 
             // Close 8 column content
             $ls_tours_shortcodes .= '[/col]';
@@ -508,25 +609,18 @@ Template name: Tour Single
 
             // CTA section
             $ls_tours_shortcodes .= '[section bg="211" bg_size="original" bg_overlay="rgba(0, 0, 0, 0.58)" bg_pos="39% 23%" dark="true" padding="120px"]';
-
             $ls_tours_shortcodes .= '[gap height="33px"]';
-
             $ls_tours_shortcodes .= '[row v_align="middle"]';
             $ls_tours_shortcodes .= '[col span="6" span__sm="12"]';
-
             $ls_tours_shortcodes .= '[ux_text font_size="2.2"]';
             $ls_tours_shortcodes .= '<h2 class="mb-0">Book a Tour</h2>';
             $ls_tours_shortcodes .= '[/ux_text]';
-
             $ls_tours_shortcodes .= '[gap height="10px"]';
-
             $ls_tours_shortcodes .= '[ux_text font_size="1.1"]';
             $ls_tours_shortcodes .= '<p>Find the perfect trip and book today - our expert guides are ready to give you a trip to remember full of engaging history and excitement.</p>';
             $ls_tours_shortcodes .= '[/ux_text]';
-
             $ls_tours_shortcodes .= '[button text="Tours" padding="7px 30px 7px 30px" link="/ls_tour_guides/"]';
             $ls_tours_shortcodes .= '[button text="Contact" color="white" style="outline" padding="7px 30px 7px 30px" link="/contact/"]';
-
             $ls_tours_shortcodes .= '[/col]';
             $ls_tours_shortcodes .= '[/row]';
             $ls_tours_shortcodes .= '[/section]';
