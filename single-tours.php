@@ -543,8 +543,10 @@ Template name: Tour Single
                 $ls_tours_shortcodes .= '[gap height="15px"]';
             }
 
-            $ls_tours_shortcodes .= ls_tours_display_tour_guides($ls_tour_guides);
-            $ls_tours_shortcodes .= '[gap height="100px"]';
+            if (!empty($ls_tour_guides)) {
+                $ls_tours_shortcodes .= ls_tours_display_tour_guides($ls_tour_guides);
+                $ls_tours_shortcodes .= '[gap height="100px"]';
+            }
             // End Overview content
 
             // Display Itinerary content
