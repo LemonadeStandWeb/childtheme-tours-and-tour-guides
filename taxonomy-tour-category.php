@@ -13,6 +13,8 @@ Template name: Tour Category Archive Page
     <div id="content" role="main">
 
         <?php
+        $queried_object = get_queried_object();
+
         $shortcodes = '';
 
         // Opening section
@@ -24,13 +26,15 @@ Template name: Tour Category Archive Page
         $shortcodes .= '[col span="8" span__sm="12" span__md="12"]';
         $shortcodes .= '[row_inner h_align="center"]';
         $shortcodes .= '[col_inner span__sm="12" span__md="10"]';
-        /*
-        $shortcodes .= '[ux_text font_size="1.4"]';
-        $shortcodes .= '<h1>This is a simple headline</h1>';
-        $shortcodes .= '[/ux_text]';
-        $shortcodes .= '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>';
-        */
-        $shortcodes .= '[button text="See All Tours" icon="icon-angle-right" link="/tours"]';
+        
+        // Getting the category name and displaying it within an h1
+        if ($queried_object instanceof WP_Term) {
+            $shortcodes .= '[ux_text font_size="1.4"]';
+            $shortcodes .= '<h1 class="mb-0">' . $queried_object->name . '</h1>';
+            $shortcodes .= '[/ux_text]';
+        }
+        //$shortcodes .= '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>';
+        //$shortcodes .= '[button text="See All Tours" icon="icon-angle-right" link="/tours"]';
         $shortcodes .= '[/col_inner]';
         $shortcodes .= '[/row_inner]';
         $shortcodes .= '[/col]';
