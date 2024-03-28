@@ -98,15 +98,17 @@ Template name: Tour Single
              * @param string $extensions The list of tour extensions.
              * @return string The shortcode output of the sticky navigation bar.
              */
-            function ls_tours_display_sticky_navbar($itinerary, $whats_included, $whats_not_included, $price_per_person, $single_supplement_price, $extensions, $uuid = null)
+            function ls_tours_display_sticky_navbar($overview, $itinerary, $whats_included, $whats_not_included, $price_per_person, $single_supplement_price, $extensions, $uuid = null)
             {
                 $output = '';
                 $output .= '[col span="4" span__sm="12" span__md="10" class="sticky-column"]';
                 $output .= '[row_inner class="sticky"]';
                 $output .= '[col_inner span__sm="12"]';
 
-                $output .= '<h3><a href="#overview">Overview</a></h3>';
-                $output .= '[divider width="100%" height="1px"]';
+                if(!empty($overview)) {
+                    $output .= '<h3><a href="#overview">Overview</a></h3>';
+                    $output .= '[divider width="100%" height="1px"]';
+                }
 
                 if (!empty($itinerary)) {
                     $output .= '<h3><a href="#itinerary">Itinerary</a></h3>';
@@ -527,7 +529,7 @@ Template name: Tour Single
             $ls_tours_shortcodes .= '[row]';
 
             // Display 4 column sticky navbar
-            $ls_tours_shortcodes .= ls_tours_display_sticky_navbar($ls_tours_itinerary, $ls_tours_whats_included, $ls_tours_whats_not_included, $ls_tours_price_per_person, $ls_tours_single_supplement_price, $ls_tours_extensions, $ls_tours_wetravel_button_uuid);
+            $ls_tours_shortcodes .= ls_tours_display_sticky_navbar($ls_tours_overview_content, $ls_tours_itinerary, $ls_tours_whats_included, $ls_tours_whats_not_included, $ls_tours_price_per_person, $ls_tours_single_supplement_price, $ls_tours_extensions, $ls_tours_wetravel_button_uuid);
 
 
             // Display Overview content
