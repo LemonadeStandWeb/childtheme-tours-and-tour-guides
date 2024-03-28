@@ -550,25 +550,35 @@ Template name: Tour Single
             // End Overview content
 
             // Display Itinerary content
-            $ls_tours_shortcodes .= '[scroll_to title="itinerary" bullet="false"]';
-            $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
-            $ls_tours_shortcodes .= '<h2>Itinerary</h2>';
-            $ls_tours_shortcodes .= '[/ux_text]';
-            $ls_tours_shortcodes .= ls_tours_display_itinerary();
+            if (!empty($ls_tours_itinerary)) {
+                $ls_tours_shortcodes .= '[scroll_to title="itinerary" bullet="false"]';
+                $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
+                $ls_tours_shortcodes .= '<h2>Itinerary</h2>';
+                $ls_tours_shortcodes .= '[/ux_text]';
+                $ls_tours_shortcodes .= ls_tours_display_itinerary();
+            }
             // End Itinerary content
 
             // Display What's Included content
-            $ls_tours_shortcodes .= '[scroll_to title="whatsincluded" bullet="false"]';
-            $ls_tours_shortcodes .= '[gap height="40px"]';
-            $ls_tours_shortcodes .= ls_tours_display_whats_included();
+            if (!empty($ls_tours_whats_included) && !empty($ls_tours_whats_not_included)) {
+                $ls_tours_shortcodes .= '[scroll_to title="whatsincluded" bullet="false"]';
+                $ls_tours_shortcodes .= '[gap height="40px"]';
+                $ls_tours_shortcodes .= ls_tours_display_whats_included();
+            }
             // End What's Included content
 
             // Display Pricing and Booking content
-            $ls_tours_shortcodes .= ls_tours_display_pricing_and_booking($ls_tours_price_per_person_currency_format, $ls_tours_single_supplement_price_currency_format, $ls_tours_wetravel_button_uuid);
+            if(!empty($ls_tours_price_per_person) || !empty($ls_tours_single_supplement_price)) {
+                $ls_tours_shortcodes .= ls_tours_display_pricing_and_booking($ls_tours_price_per_person_currency_format, $ls_tours_single_supplement_price_currency_format, $ls_tours_wetravel_button_uuid);
+            }
+            // End Pricing and Booking content
 
             // Display Extensions content
-            $ls_tours_shortcodes .= ls_tours_display_extensions($ls_tours_name);
-
+            if(!empty($ls_tours_extensions)) {
+                $ls_tours_shortcodes .= ls_tours_display_extensions($ls_tours_name);
+            }
+            // End Extensions content
+            
             // Close 8 column content
             $ls_tours_shortcodes .= '[/col]';
 
