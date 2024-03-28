@@ -105,7 +105,7 @@ Template name: Tour Single
                 $output .= '[row_inner class="sticky"]';
                 $output .= '[col_inner span__sm="12"]';
 
-                if(!empty($overview)) {
+                if (!empty($overview)) {
                     $output .= '<h3><a href="#overview">Overview</a></h3>';
                     $output .= '[divider width="100%" height="1px"]';
                 }
@@ -535,11 +535,14 @@ Template name: Tour Single
             // Display Overview content
             $ls_tours_shortcodes .= '[col span="8" span__sm="12" padding="0px 0px 0px 50px"]';
 
-            $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
-            $ls_tours_shortcodes .= '<h2>Overview</h2>';
-            $ls_tours_shortcodes .= '[/ux_text]';
-            $ls_tours_shortcodes .= '<p>' . $ls_tours_overview_content . '</p>';
-            $ls_tours_shortcodes .= '[gap height="15px"]';
+            if (!empty($ls_tours_overview_content)) {
+                $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
+                $ls_tours_shortcodes .= '<h2>Overview</h2>';
+                $ls_tours_shortcodes .= '[/ux_text]';
+                $ls_tours_shortcodes .= '<p>' . $ls_tours_overview_content . '</p>';
+                $ls_tours_shortcodes .= '[gap height="15px"]';
+            }
+
             $ls_tours_shortcodes .= ls_tours_display_tour_guides($ls_tour_guides);
             $ls_tours_shortcodes .= '[gap height="100px"]';
             // End Overview content
