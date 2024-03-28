@@ -531,10 +531,10 @@ Template name: Tour Single
             // Display 4 column sticky navbar
             $ls_tours_shortcodes .= ls_tours_display_sticky_navbar($ls_tours_overview_content, $ls_tours_itinerary, $ls_tours_whats_included, $ls_tours_whats_not_included, $ls_tours_price_per_person, $ls_tours_single_supplement_price, $ls_tours_extensions, $ls_tours_wetravel_button_uuid);
 
-
-            // Display Overview content
+            // Begin 8 column content
             $ls_tours_shortcodes .= '[col span="8" span__sm="12" padding="0px 0px 0px 50px"]';
 
+            // Display Overview content
             if (!empty($ls_tours_overview_content)) {
                 $ls_tours_shortcodes .= '[ux_text font_size="1.4"]';
                 $ls_tours_shortcodes .= '<h2>Overview</h2>';
@@ -542,12 +542,14 @@ Template name: Tour Single
                 $ls_tours_shortcodes .= '<p>' . $ls_tours_overview_content . '</p>';
                 $ls_tours_shortcodes .= '[gap height="15px"]';
             }
+            // End Overview content
 
+            // Display Tour Guides content
             if (!empty($ls_tour_guides)) {
                 $ls_tours_shortcodes .= ls_tours_display_tour_guides($ls_tour_guides);
                 $ls_tours_shortcodes .= '[gap height="100px"]';
             }
-            // End Overview content
+            // End Tour Guides content
 
             // Display Itinerary content
             if (!empty($ls_tours_itinerary)) {
@@ -578,7 +580,7 @@ Template name: Tour Single
                 $ls_tours_shortcodes .= ls_tours_display_extensions($ls_tours_name);
             }
             // End Extensions content
-            
+
             // Close 8 column content
             $ls_tours_shortcodes .= '[/col]';
 
