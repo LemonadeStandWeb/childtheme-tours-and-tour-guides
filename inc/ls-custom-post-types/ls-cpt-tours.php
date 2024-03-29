@@ -22,10 +22,11 @@ function ls_create_tours() {
 		'description'         => 'Tours post type',
 		'labels'              => $labels,
 		'public'              => true,
-		'has_archive'         => true,
+		'has_archive'         => false,
 		'publicly_queryable'  => true,
 		'query_var' 	      => true,
-		'rewrite'			  => true,
+		//TODO: Update rewrite to tours/%tour-category%
+		'rewrite'			  => array( 'slug' => 'tours/%tour-category%' ),
 		'capability_type'	  => 'post',	
 		'hierarchical'        => false,	
 		'supports'            => array( 'title', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'editor' ),
