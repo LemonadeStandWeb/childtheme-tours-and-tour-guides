@@ -406,7 +406,7 @@ Template name: Tour Single
                         the_row();
 
                         $extension_link          = get_sub_field('ls_tours_repeater_extension_link');
-                        $extension_title         = get_sub_field('ls_tours_repeater_title');
+                        $extension_title         = get_sub_field('ls_tours_repeater_extension_title');
                         $extension_content       = get_sub_field('ls_tours_repeater_extension_content');
                         $extension_price_content = get_sub_field('ls_tours_repeater_extension_price_content');
 
