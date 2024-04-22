@@ -13,43 +13,79 @@ Template name: Tour Category Archive Page
     <div id="content" role="main">
 
         <?php
-        $queried_object = get_queried_object();
 
-        $shortcodes = '';
+        function ls_display_tour_guide_picture($tour_guide): string
+        {
+            $tour_guide_image = get_field('ls_tour_guides_profile_picture', $tour_guide->ID);
+            $tour_guide_link = get_permalink($tour_guide->ID);
 
-        // Opening section
-        $shortcodes .= '[section]';
-        $shortcodes .= '[gap height="30px"]';
-
-        // Title with a paragraph
-        $shortcodes .= '[row]';
-        $shortcodes .= '[col span="8" span__sm="12" span__md="12"]';
-        $shortcodes .= '[row_inner h_align="center"]';
-        $shortcodes .= '[col_inner span__sm="12" span__md="10"]';
-        
-        // Getting the category name and displaying it within an h1
-        if ($queried_object instanceof WP_Term) {
-            $shortcodes .= '[ux_text font_size="1.4"]';
-            $shortcodes .= '<h1 class="mb-0">' . $queried_object->name . '</h1>';
-            $shortcodes .= '[/ux_text]';
+            return '[ux_image id="' . $tour_guide_image . '" width="60" link="' . $tour_guide_link . '"]';
         }
-        //$shortcodes .= '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>';
-        //$shortcodes .= '[button text="See All Tours" icon="icon-angle-right" link="/tours"]';
+
+        $term_id = get_queried_object_id();
+
+        $ls_tours_category_hero_ux_block = get_field('ls_tours_category_hero_ux_block', 'term_' . $term_id);
+        $ls_tours_category_after_tours_ux_block = get_field('ls_tours_category_after_tours_ux_block', 'term_' . $term_id);
+
+        // Display the hero section
+        echo do_shortcode($ls_tours_category_hero_ux_block);
+
+        // Opening shortcode tags
+        $shortcodes =  '[section padding="50px"]';
+        $shortcodes .= '[gap height="40px"]';
+        $shortcodes .= '[row h_align="center"]';
+        $shortcodes .= '[col span__sm="12" span__md="11"]';
+
+        // Display 'Date', 'Guide', and 'Destination' titles in their respective columns
+        $shortcodes .= '[row_inner label="TOURS ROW - TOURS PAGE" style="collapse" h_align="center" visibility="hide-for-small"]';
+        $shortcodes .= '[col_inner span="3" span__sm="12" span__md="3" padding="0px 40px 0px 0px"]';
+        $shortcodes .= '<h3 class="mb-0">Date</h3>';
+        $shortcodes .= '[divider width="100%" height="1px"]';
+        $shortcodes .= '[/col_inner]';
+        $shortcodes .= '[col_inner span="2" span__sm="12" span__md="3" padding="0px 20px 0px 0px"]';
+        $shortcodes .= '<h3 class="mb-0">Guide</h3>';
+        $shortcodes .= '[divider width="100%" height="1px"]';
+        $shortcodes .= '[/col_inner]';
+        $shortcodes .= '[col_inner span="7" span__sm="12" span__md="6" padding="0px 0px 0px 20px"]';
+        $shortcodes .= '<h3 class="mb-0"> Destination </h3>';
+        $shortcodes .= '[divider width="100%" height="1px"]';
         $shortcodes .= '[/col_inner]';
         $shortcodes .= '[/row_inner]';
-        $shortcodes .= '[/col]';
-        $shortcodes .= '[/row]';
-        // End title with a paragraph 
-
-        // Opening row/col/row for clickable cards and responsiveness
-        $shortcodes .= '[row h_align="center"]';
-        $shortcodes .= '[col span__sm="12" span__md="10"]';
-        $shortcodes .= '[row_inner v_align="equal"]';
         ?>
 
         <?php while (have_posts()) : the_post(); ?>
 
             <?php
+
+            /**
+             * Fetch 1 tour guide assigned to the tour
+             *
+             * @return array An array of tour guide posts.
+             */
+            $ls_tour_guides = get_posts(array(
+                'post_type'      => 'tour_guides',
+                'posts_per_page' => 1,
+                'meta_query'     => array(
+                    array(
+                        'key'     => 'ls_tour_guides_assigned_tours',
+                        'value'   => '"' . get_the_ID() . '"',
+                        'compare' => 'LIKE'
+                    )
+                )
+            ));
+
+            if ( ! empty ( $ls_tour_guides ) && is_array( $ls_tour_guides ) ) {
+                $first_tour_guide = $ls_tour_guides[0];
+            } else {
+                $first_tour_guide = null;
+            }
+
+            if ( $first_tour_guide ) {
+                $tour_guide_shortcodes = ls_display_tour_guide_picture($first_tour_guide);
+            } else {
+                $tour_guide_shortcodes = '<p>Please assign a tour guide to this tour.</p>';
+            }
+
             // Fetch the post variables
             $ls_tours_name                 = get_field('ls_tours_name');
             $ls_tours_hero_image           = get_field('ls_tours_hero_image');
@@ -59,51 +95,85 @@ Template name: Tour Category Archive Page
             $ls_tours_end_date_month_day   = date('M j', strtotime($ls_tours_end_date));
             $ls_tours_year                 = date('Y', strtotime($ls_tours_start_date));
             $ls_tours_link                 = get_permalink(get_the_ID());
+            $ls_tours_ID                   = get_the_ID();
 
-            $shortcodes .= '[col_inner span="4" span__sm="12" span__md="12" padding="100% 0px 0px 0px" class="clickable-card tour-card"]';
-            $shortcodes .= '[ux_html]';
-            $shortcodes .= '<a href="' . $ls_tours_link . '" class="clickable-card-link"></a>';
-            $shortcodes .= '[/ux_html]';
-            $shortcodes .= '[ux_image id="' . $ls_tours_hero_image . '" image_overlay="rgba(0, 0, 0, 0.55)" class="fill"]';
+            $shortcodes .= '[row_inner label="TOURS ROW - TOURS PAGE" h_align="center"]';
+            $shortcodes .= '[col_inner span="3" span__sm="12" span__md="3"]';
+
+            // Display the tour year
+            if ( ! empty ( $ls_tours_year ) ) {
+                $shortcodes .= '[ux_text font_size="2"]';
+                $shortcodes .= '<h6 class="mb-0"><span data-text-color="primary">' . $ls_tours_year . '</span></h6>';
+                $shortcodes .= '[/ux_text]';
+            }
+
+            // Display start and end days for the tour
+            $shortcodes .= '[ux_text font_size="1.5" font_size__sm="1.2" line_height="0.75"]';
+            if ( ! empty ( $ls_tours_start_date_month_day ) && ! empty ( $ls_tours_end_date_month_day) ) {
+                $shortcodes .= '<h3 class="mb-0 uppercase">' . $ls_tours_start_date_month_day . ' - ' . $ls_tours_end_date_month_day . '</h3>';
+            } else {
+                $shortcodes .= '<h3 class="mb-0 uppercase">COMING</br>SOON</h3>';
+            }
+            $shortcodes .= '[/ux_text]';
+
+            $shortcodes .= '[gap height="20px"]';
+
+            //TODO: Conditional check for future ACF field ("Is this a new tour?")
+            $shortcodes .= '[ux_text font_size="0.8" visibility="hidden"]';
+            $shortcodes .= '<p class="uppercase mb-half"><span style="background-color: #b98919; padding:6px"><b>New Tour</b></span></p>';
+            $shortcodes .= '[/ux_text]';
+
+            $shortcodes .= '[/col_inner]';
+
+            $shortcodes .= '[col_inner span="2" span__sm="12" span__md="3"]';
+            //TODO: Conditional check if tour guide is available
+            $shortcodes .= $tour_guide_shortcodes;
+            $shortcodes .= '[/col_inner]';
+
+            $shortcodes .= '[col_inner span="7" span__sm="12" span__md="6"]';
             $shortcodes .= '[row_inner_1]';
-            $shortcodes .= '[col_inner_1 span__sm="12" padding="0px 0px 0px 30px" margin="-85% 0px 0px 0px"]';
+            $shortcodes .= '[col_inner_1 span="8" span__sm="12" span__md="12"]';
 
-            if (!empty($ls_tours_start_date_month_day) && !empty($ls_tours_end_date_month_day)) {
-                $shortcodes .= '[ux_text font_size="1.1"]';
-                $shortcodes .= '<h6 class="mb-0">' . $ls_tours_start_date_month_day . ' - ' . $ls_tours_end_date_month_day . '</h6>';
-                $shortcodes .= '[/ux_text]';
-            }
+            //TODO: See if conditional check here is needed
+            $shortcodes .= '<h2 class="mb-0"><a href="' . $ls_tours_link . '">' . $ls_tours_name . '</a></h2>';
+            $shortcodes .= '[button text="View Itinerary" color="white" style="link" link="' . $ls_tours_link . '"]';
 
-            if (!empty($ls_tours_year)) {
-                $shortcodes .= '[ux_text font_size="2.2" line_height="0.75"]';
-                $shortcodes .= '<h3 class="mb-0">' . $ls_tours_year . '</h3>';
-                $shortcodes .= '[/ux_text]';
-            }
-
-            $shortcodes .= '[/col_inner_1]';
-            $shortcodes .= '[col_inner_1 span__sm="12" padding="0px 30px 0px 30px"]';
-
-            if (!empty($ls_tours_name)) {
-                $shortcodes .= '<h3 class="mb-0">' . $ls_tours_name . '</h3>';
-                $shortcodes .= '<p>&nbsp;</p>';
-                $shortcodes .= '[button text="Learn More" icon="icon-angle-right"]';
-            }
+            //TODO: Pull in WeTravel script
+            $shortcodes .= '[ux_html]';
+            $shortcodes .= '<button class="wtrvl-checkout_button" id="wetravel_button_widget" data-env="https://www.wetravel.com" data-version="v0.3" data-uid="746955" data-uuid="48259305" href="https://www.wetravel.com/checkout_embed?uuid=48259305" style="display: inline-block; color:#daa425;border: 0px;border-radius: 0px;font-weight: 1000;font-size: 15px;-webkit-font-smoothing: antialiased;text-transform: uppercase;padding: 20px 30px;text-decoration: none;text-align: center;line-height: 14px;display: inline-block; cursor: pointer;">Book This Tour&emsp;<i class="icon-angle-right" aria-hidden="true"></i></button>';
+            $shortcodes .= '<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">';
+            $shortcodes .= '<script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>';
+            $shortcodes .= '[/ux_html]';
 
             $shortcodes .= '[/col_inner_1]';
+
+            $shortcodes .= '[col_inner_1 span="4" span__sm="12" span__md="12" force_first="medium"]';
+            if( ! empty ( $ls_tours_hero_image) ){
+                $shortcodes .= '[ux_image id="' . $ls_tours_hero_image . '"]';
+            }
+            $shortcodes .= '[/col_inner_1]';
+
             $shortcodes .= '[/row_inner_1]';
             $shortcodes .= '[/col_inner]';
+            $shortcodes .= '[/row_inner]';
             ?>
         <?php endwhile; ?>
 
         <?php
-        // Close out the opening row/col/row for clickable cards and responsiveness
-        $shortcodes .= '[/row_inner]';
+
+        // Closing shortcode tags
         $shortcodes .= '[/col]';
         $shortcodes .= '[/row]';
-
-        // Close out the section
         $shortcodes .= '[/section]';
+
+        // Display the tours
         echo do_shortcode($shortcodes);
+
+        // Display the after tours section
+        echo do_shortcode($ls_tours_category_after_tours_ux_block);
+
+        // Display the CTA section
+        echo do_shortcode('[block id="35"]');
         ?>
 
     </div>

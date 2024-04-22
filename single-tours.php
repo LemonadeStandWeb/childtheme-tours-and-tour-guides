@@ -454,7 +454,7 @@ Template name: Tour Single
             }
 
             /**
-             * Retrieves tour guides assigned to the current tour guide.
+             * Fetch tour guides assigned to this tour
              *
              * @return array An array of tour guide posts.
              */
