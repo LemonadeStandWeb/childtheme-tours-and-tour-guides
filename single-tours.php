@@ -98,7 +98,7 @@ Template name: Tour Single
              * @param string $extensions The list of tour extensions.
              * @return string The shortcode output of the sticky navigation bar.
              */
-            function ls_tours_display_sticky_navbar($overview, $itinerary, $whats_included, $whats_not_included, $price_per_person, $single_supplement_price, $extensions, $uuid = null)
+            function ls_tours_display_sticky_navbar($overview, $itinerary, $whats_included, $whats_not_included, $price_per_person, $single_supplement_price, $extensions, $wetravel_button= null)
             {
                 $output = '';
                 $output .= '[col span="4" span__sm="12" span__md="10" class="sticky-column"]';
@@ -131,9 +131,7 @@ Template name: Tour Single
                 }
 
                 $output .= '[ux_html]';
-                $output .= '<button class="wtrvl-checkout_button playfair-style" id="wetravel_button_widget" data-env="https://www.wetravel.com data-version="v0.3" data-uid="' . $uuid . '" data-uuid="89148139" href=https://www.wetravel.com/checkout_embed?uuid=' . $uuid . '>Book Now&emsp;</button>';
-                $output .= '<link href=https://fonts.googleapis.com/css?family=Poppins rel="stylesheet">';
-                $output .= '<script src=https://cdn.wetravel.com/widgets/embed_checkout.js></script>';
+                $output .=  $wetravel_button;
                 $output .= '[/ux_html]';
 
                 $output .= '[/col_inner]';
@@ -331,10 +329,10 @@ Template name: Tour Single
              *
              * @param string $price_per_person The price per person for the tour.
              * @param string $single_supplement_price The price for single supplement (if applicable).
-             * @param string $wetravel_button_uuid The UUID for the WeTravel button.
+             * @param string $wetravel_button The script for the WeTravel button.
              * @return string The shortcode output for displaying pricing and booking information.
              */
-            function ls_tours_display_pricing_and_booking($price_per_person, $single_supplement_price, $wetravel_button_uuid)
+            function ls_tours_display_pricing_and_booking($price_per_person, $single_supplement_price, $wetravel_button)
             {
 
                 if ($price_per_person != '$0' || $single_supplement_price != '$0') {
@@ -369,9 +367,7 @@ Template name: Tour Single
                     $output .= '[/row_inner]';
 
                     $output .= '[ux_html]';
-                    $output .= '<button class="wtrvl-checkout_button poppins-style" id="wetravel_button_widget" data-env="https://www.wetravel.com" data-version="v0.3" data-uid="' . $wetravel_button_uuid . '" data-uuid="89148139" href="https://www.wetravel.com/checkout_embed?uuid=' . $wetravel_button_uuid . '" >Book Now</button>';
-                    $output .= '<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">';
-                    $output .= '<script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>';
+                    $output .= $wetravel_button;
                     $output .= '[/ux_html]';
 
                     return $output;
@@ -503,7 +499,7 @@ Template name: Tour Single
             $ls_tours_itinerary                               = get_field('ls_tours_itinerary');
             $ls_tours_whats_included                          = get_field('ls_tours_whats_included');
             $ls_tours_whats_not_included                      = get_field('ls_tours_whats_not_included');
-            $ls_tours_wetravel_button_uuid                    = get_field('ls_tours_wetravel_button_uuid');
+            $ls_tours_wetravel_button_script                    = get_field('ls_tours_wetravel_button_script');
 
             $ls_tours_price_per_person                        = get_field('ls_tours_price_per_person');
             $ls_tours_single_supplement_price                 = get_field('ls_tours_single_supplement_price');
@@ -529,7 +525,7 @@ Template name: Tour Single
             $ls_tours_shortcodes .= '[row]';
 
             // Display 4 column sticky navbar
-            $ls_tours_shortcodes .= ls_tours_display_sticky_navbar($ls_tours_overview_content, $ls_tours_itinerary, $ls_tours_whats_included, $ls_tours_whats_not_included, $ls_tours_price_per_person, $ls_tours_single_supplement_price, $ls_tours_extensions, $ls_tours_wetravel_button_uuid);
+            $ls_tours_shortcodes .= ls_tours_display_sticky_navbar($ls_tours_overview_content, $ls_tours_itinerary, $ls_tours_whats_included, $ls_tours_whats_not_included, $ls_tours_price_per_person, $ls_tours_single_supplement_price, $ls_tours_extensions, $ls_tours_wetravel_button_script);
 
             // Begin 8 column content
             $ls_tours_shortcodes .= '[col span="8" span__sm="12" padding="0px 0px 0px 50px"]';
@@ -571,7 +567,7 @@ Template name: Tour Single
 
             // Display Pricing and Booking content
             if(!empty($ls_tours_price_per_person) || !empty($ls_tours_single_supplement_price)) {
-                $ls_tours_shortcodes .= ls_tours_display_pricing_and_booking($ls_tours_price_per_person_currency_format, $ls_tours_single_supplement_price_currency_format, $ls_tours_wetravel_button_uuid);
+                $ls_tours_shortcodes .= ls_tours_display_pricing_and_booking($ls_tours_price_per_person_currency_format, $ls_tours_single_supplement_price_currency_format, $ls_tours_wetravel_button_script);
             }
             // End Pricing and Booking content
 
