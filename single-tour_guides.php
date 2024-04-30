@@ -71,11 +71,11 @@ Template name: Tour Guides Single
 
                 // Loop through each assigned tour and display them
                 foreach( $ls_tour_guides_assigned_tours as $tour ) {
-                    $ls_tours_name                = get_field( 'ls_tours_name', $tour->ID );
-                    $ls_tours_post_link           = get_permalink( $tour->ID );
-                    $ls_tours_book_now_button_url = get_field('ls_tours_book_now_button_url', $tour->ID);
-                    $ls_tours_start_date          = new DateTime(get_field('ls_tours_start_date', $tour->ID));
-                    $ls_tours_end_date            = new DateTime(get_field('ls_tours_end_date', $tour->ID));
+                    $ls_tours_name                   = get_field( 'ls_tours_name', $tour->ID );
+                    $ls_tours_post_link              = get_permalink( $tour->ID );
+                    $ls_tours_wetravel_button_script = get_field('ls_tours_wetravel_button_script');
+                    $ls_tours_start_date             = new DateTime(get_field('ls_tours_start_date', $tour->ID));
+                    $ls_tours_end_date               = new DateTime(get_field('ls_tours_end_date', $tour->ID));
 
                     // Format the date to match the original design ( M d - M d, Y )
                     $ls_tours_formatted_start_date = $ls_tours_start_date->format('M d');
@@ -95,7 +95,7 @@ Template name: Tour Guides Single
                     $shortcodes .= '<h2 class="mb-0"><a href="' . $ls_tours_post_link . '">' . $ls_tours_name . '</a></h2>';
                     $shortcodes .= '[button text="View Itinerary" color="white" style="link" size="small" link="' . $ls_tours_post_link . '"]';
                     $shortcodes .= '[ux_html]';
-                    $shortcodes .= '<button class="wtrvl-checkout_button" id="wetravel_button_widget" data-env=https://www.wetravel.com data-version="v0.3" data-uid="746955" data-uuid="89148139" href=https://www.wetravel.com/checkout_embed?uuid=89148139 style="display: inline-block; color:#daa425;border: 0px;border-radius: 0px;font-weight: 1000;font-size: 15px;-webkit-font-smoothing: antialiased;text-transform: uppercase;padding: 20px 30px;text-decoration: none;text-align: center;line-height: 14px;display: inline-block; cursor: pointer;">Book This Tour&emsp;<i class="icon-angle-right" aria-hidden="true"></i></button> <link href=https://fonts.googleapis.com/css?family=Poppins rel="stylesheet"> <script src=https://cdn.wetravel.com/widgets/embed_checkout.js></script>';
+                    $shortcodes .= $ls_tours_wetravel_button_script;
                     $shortcodes .= '[/ux_html]';
                     $shortcodes .= '[/col_inner]';
                     $shortcodes .= '[/row_inner]';
