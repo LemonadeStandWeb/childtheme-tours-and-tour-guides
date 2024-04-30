@@ -329,7 +329,7 @@ Template name: Tour Single
 
                     // Display Traveler's Insurance Hyperlink
                     if (!empty ($ls_tours_travelers_insurance= get_field('ls_tours_travelers_insurance'))){
-                        $output .= '<li><a href="' . $ls_tours_travelers_insurance . '" target="_blank" rel="noopener noreferrer" data-text-color="primary">Traveler\'s Insurance</a></li>';
+                        $output .= '<li><a href="' . $ls_tours_travelers_insurance . '" target="_blank" rel="noopener noreferrer">Traveler\'s Insurance <span data-text-color="primary">(Click to purchase insurance)</span></a></li>';
                     }
 
                     $output .= '</ul>';
