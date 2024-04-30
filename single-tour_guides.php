@@ -73,7 +73,7 @@ Template name: Tour Guides Single
                 foreach( $ls_tour_guides_assigned_tours as $tour ) {
                     $ls_tours_name                   = get_field( 'ls_tours_name', $tour->ID );
                     $ls_tours_post_link              = get_permalink( $tour->ID );
-                    $ls_tours_wetravel_button_script = get_field('ls_tours_wetravel_button_script');
+                    $ls_tours_wetravel_button_script = get_field('ls_tours_wetravel_button_script', $tour->ID);
                     $ls_tours_start_date             = new DateTime(get_field('ls_tours_start_date', $tour->ID));
                     $ls_tours_end_date               = new DateTime(get_field('ls_tours_end_date', $tour->ID));
 
