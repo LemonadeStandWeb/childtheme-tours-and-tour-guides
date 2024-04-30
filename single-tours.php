@@ -37,7 +37,16 @@ Template name: Tour Single
                 $output .= '<h1 class="mb-half">' . $tour_name . '</h1>';
                 $output .= '[/ux_text]';
                 $output .= '[divider width="100%" height="1px" color="rgba(255, 255, 255, 0.5)"]';
-                $output .= '<h4>' . $start_date . ' - ' . $end_date . '</h4>';
+
+                $ls_tours_do_we_have_the_tour_dates_available = get_field('ls_tours_do_we_have_the_tour_dates_available');
+
+                if ( $ls_tours_do_we_have_the_tour_dates_available == 'no' ) {
+                    $dates_placeholder = get_field('ls_tours_date_placeholder');
+                    $output .= '<h4>' . $dates_placeholder . '</h4>';
+                } elseif ( $ls_tours_do_we_have_the_tour_dates_available == 'yes' ) {
+                    $output .= '<h4>' . $start_date . ' - ' . $end_date . '</h4>';
+                }
+
                 $output .= '[/col]';
                 $output .= '[/row]';
                 $output .= '[/section]';
@@ -155,16 +164,21 @@ Template name: Tour Single
 
                 // Check if the repeater field has been populated with any info
                 if (have_rows('ls_tours_itinerary')) {
-
+                    $day = 0;
                     // Loop through each row of the repeater if info was found
                     while (have_rows('ls_tours_itinerary')) {
                         the_row();
-
+                        
                         // Fetch the ACF fields for this day that are common to both conditions (images available or not)
-                        $day_date    = get_sub_field('ls_tours_repeater_date') ?: get_sub_field('ls_tours_itinerary_date'); // Fallback if repeater_date is not set
-                        $day_date    = date('F j', strtotime($day_date));
-                        $day_title   = get_sub_field('ls_tours_repeater_title');
-                        $day_content = get_sub_field('ls_tours_repeater_content');
+                        $dates_available  = get_field('ls_tours_do_we_have_the_tour_dates_available');
+                        if ($dates_available == 'yes') {
+                            $day_date = get_sub_field('ls_tours_repeater_date');
+                            $day_date = date('F j', strtotime($day_date));
+                        } else {
+                            $day_date = 'Day';
+                        }
+                        $day_title        = get_sub_field('ls_tours_repeater_title');
+                        $day_content      = get_sub_field('ls_tours_repeater_content');
 
                         // Handle images based on availability
                         if ($images_available == 'yes') {
@@ -186,7 +200,12 @@ Template name: Tour Single
                         }
 
                         // Display date, title, and content
-                        $output .= '<h3><span data-text-color="primary"><strong>' . $day_date . '</strong></span> - ' . $day_title . '</h3>';
+                        if ($dates_available == 'yes'){
+                            $output .= '<h3><span data-text-color="primary"><strong>' . $day_date . '</strong></span> - ' . $day_title . '</h3>';
+                        } else{
+                            $output .= '<h3><span data-text-color="primary"><strong>' . $day_date . ' ' . ++$day . '</strong></span> - ' . $day_title . '</h3>';
+                        }
+
                         $output .= '<p>' . $day_content . '</p>';
 
                         // Display additional information if available
