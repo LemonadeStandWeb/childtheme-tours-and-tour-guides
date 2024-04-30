@@ -168,7 +168,7 @@ Template name: Tour Single
                     // Loop through each row of the repeater if info was found
                     while (have_rows('ls_tours_itinerary')) {
                         the_row();
-                        
+
                         // Fetch the ACF fields for this day that are common to both conditions (images available or not)
                         $dates_available  = get_field('ls_tours_do_we_have_the_tour_dates_available');
                         if ($dates_available == 'yes') {
@@ -325,6 +325,11 @@ Template name: Tour Single
                     // Loop through the ACF subfield within the repeater and display each item
                     foreach ($not_included_items as $not_included_item) {
                         $output .= '<li>' . $not_included_item['ls_tours_repeater_item_not_included'] . '</li>';
+                    }
+
+                    // Display Traveler's Insurance Hyperlink
+                    if (!empty ($ls_tours_travelers_insurance= get_field('ls_tours_travelers_insurance'))){
+                        $output .= '<li><a href="' . $ls_tours_travelers_insurance . '" target="_blank" rel="noopener noreferrer" data-text-color="primary">Traveler\'s Insurance</a></li>';
                     }
 
                     $output .= '</ul>';
@@ -518,7 +523,8 @@ Template name: Tour Single
             $ls_tours_itinerary                               = get_field('ls_tours_itinerary');
             $ls_tours_whats_included                          = get_field('ls_tours_whats_included');
             $ls_tours_whats_not_included                      = get_field('ls_tours_whats_not_included');
-            $ls_tours_wetravel_button_script                    = get_field('ls_tours_wetravel_button_script');
+            $ls_tours_travelers_insurance                     = get_field('ls_tours_travelers_insurance');
+            $ls_tours_wetravel_button_script                  = get_field('ls_tours_wetravel_button_script');
 
             $ls_tours_price_per_person                        = get_field('ls_tours_price_per_person');
             $ls_tours_single_supplement_price                 = get_field('ls_tours_single_supplement_price');
