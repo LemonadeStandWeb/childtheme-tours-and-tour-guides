@@ -29,7 +29,7 @@ function ls_shortcode_category_cards(): bool|string
             $shortcodes .= '[ux_image id="' . $image_id . '" image_overlay="rgba(0, 0, 0, 0.55)" class="fill"]';
             $shortcodes .= '[row_inner_2]';
             $shortcodes .= '[col_inner_2 span__sm="12" padding="0px 0px 0px 30px" margin="-65% 0px 0px 0px"]';
-            $shortcodes .= '[ux_text font_size="2.2" line_height="1.1"]';
+            $shortcodes .= '[ux_text font_size="1.5" line_height="1.1"]';
             $shortcodes .= '<h3 class="mb-0">' . esc_html($category->name) . '</h3>';
             $shortcodes .= '[/ux_text]';
             $shortcodes .= '[/col_inner_2]';
