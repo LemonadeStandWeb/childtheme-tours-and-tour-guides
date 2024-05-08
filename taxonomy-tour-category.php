@@ -96,6 +96,7 @@ Template name: Tour Category Archive Page
             $ls_tours_year                 = date('Y', strtotime($ls_tours_start_date));
             $ls_tours_link                 = get_permalink(get_the_ID());
             $ls_tours_ID                   = get_the_ID();
+            $ls_tours_wetravel_button_script = get_field('ls_tours_wetravel_button_script');
 
             $shortcodes .= '[row_inner label="TOURS ROW - TOURS PAGE" h_align="center"]';
             $shortcodes .= '[col_inner span="3" span__sm="12" span__md="3"]';
@@ -140,9 +141,7 @@ Template name: Tour Category Archive Page
 
             //TODO: Pull in WeTravel script
             $shortcodes .= '[ux_html]';
-            $shortcodes .= '<button class="wtrvl-checkout_button" id="wetravel_button_widget" data-env="https://www.wetravel.com" data-version="v0.3" data-uid="746955" data-uuid="48259305" href="https://www.wetravel.com/checkout_embed?uuid=48259305" style="display: inline-block; color:#daa425;border: 0px;border-radius: 0px;font-weight: 1000;font-size: 15px;-webkit-font-smoothing: antialiased;text-transform: uppercase;padding: 20px 30px;text-decoration: none;text-align: center;line-height: 14px;display: inline-block; cursor: pointer;">Book This Tour&emsp;<i class="icon-angle-right" aria-hidden="true"></i></button>';
-            $shortcodes .= '<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">';
-            $shortcodes .= '<script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>';
+            $shortcodes .= $ls_tours_wetravel_button_script;
             $shortcodes .= '[/ux_html]';
 
             $shortcodes .= '[/col_inner_1]';
