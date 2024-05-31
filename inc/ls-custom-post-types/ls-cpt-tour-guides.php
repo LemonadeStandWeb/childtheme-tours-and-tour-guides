@@ -76,7 +76,3 @@ function ls_create_tour_guide_taxonomies() {
 	register_taxonomy( 'tour-guide-category', array( 'tour_guides' ), $args ); 
 }
 add_action( 'init', 'ls_create_tour_guide_taxonomies', 0 );
-
-add_action( 'init', function () {
-	add_ux_builder_post_type( 'tour_guides' );
-} );
