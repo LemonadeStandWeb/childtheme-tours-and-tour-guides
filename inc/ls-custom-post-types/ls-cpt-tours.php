@@ -77,7 +77,3 @@ function ls_create_tour_taxonomies() {
 	register_taxonomy( 'tour-category', array( 'tours' ), $args ); 
 }
 add_action( 'init', 'ls_create_tour_taxonomies', 0 );
-
-add_action( 'init', function () {
-	add_ux_builder_post_type( 'tours' );
-} );
