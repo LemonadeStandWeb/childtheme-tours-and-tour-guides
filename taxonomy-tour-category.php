@@ -51,9 +51,27 @@ Template name: Tour Category Archive Page
         $shortcodes .= '[divider width="100%" height="1px"]';
         $shortcodes .= '[/col_inner]';
         $shortcodes .= '[/row_inner]';
+
+        // Custom query to get all tours in the current category and order by start date
+        $args = array(
+            'post_type' => 'tours',
+            'posts_per_page' => -1,
+            'meta_key' => 'ls_tours_start_date',
+            'orderby' => 'meta_value',
+            'order' => 'ASC',
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'tour-category',
+                    'field' => 'term_id',
+                    'terms' => $term_id,
+                ),
+            ),
+        );
+
+        $query = new WP_Query($args);
         ?>
 
-        <?php while (have_posts()) : the_post(); ?>
+        <?php while ($query->have_posts()) : $query->the_post(); ?>
 
             <?php
 
@@ -139,6 +157,7 @@ Template name: Tour Category Archive Page
             $shortcodes .= '<h2 class="mb-0"><a href="' . $ls_tours_link . '">' . $ls_tours_name . '</a></h2>';
             $shortcodes .= '[button text="View Itinerary" color="white" style="link" link="' . $ls_tours_link . '"]';
 
+            //TODO: Pull in WeTravel script
             $shortcodes .= '[ux_html]';
             $shortcodes .= $ls_tours_wetravel_button_script;
             $shortcodes .= '[/ux_html]';
@@ -155,7 +174,7 @@ Template name: Tour Category Archive Page
             $shortcodes .= '[/col_inner]';
             $shortcodes .= '[/row_inner]';
             ?>
-        <?php endwhile; ?>
+        <?php endwhile; wp_reset_postdata(); ?>
 
         <?php
 
