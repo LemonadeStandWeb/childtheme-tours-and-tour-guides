@@ -139,7 +139,6 @@ Template name: Tour Category Archive Page
             $shortcodes .= '<h2 class="mb-0"><a href="' . $ls_tours_link . '">' . $ls_tours_name . '</a></h2>';
             $shortcodes .= '[button text="View Itinerary" color="white" style="link" link="' . $ls_tours_link . '"]';
 
-            //TODO: Pull in WeTravel script
             $shortcodes .= '[ux_html]';
             $shortcodes .= $ls_tours_wetravel_button_script;
             $shortcodes .= '[/ux_html]';

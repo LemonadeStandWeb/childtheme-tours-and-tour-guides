@@ -29,3 +29,12 @@ function ls_tours_permalinks( $post_link, $post ){
 }
 
 add_filter( 'post_type_link', 'ls_tours_permalinks', 1, 2 );
+
+// Display all relevant tours on the tour category archive page
+function ls_pre_get_posts( $query ): void
+{
+    if ( ! is_admin() && $query->is_main_query() && is_tax( 'tour-category' ) ) {
+        $query->set( 'posts_per_page', -1 );
+    }
+}
+add_action( 'pre_get_posts', 'ls_pre_get_posts' );
