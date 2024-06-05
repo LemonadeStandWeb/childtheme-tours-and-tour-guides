@@ -21,7 +21,7 @@ function ls_shortcode_category_cards(): bool|string
         foreach ($categories as $category) {
             $image_id = get_field('ls_tours_category_card_image', $category);
             $image_id = !empty($image_id) ? $image_id : 2524;
-            $category_link = esc_url(get_term_link($category));
+            $category_link = esc_url(home_url('/') . $category->slug);
             $shortcodes .= '[col_inner_1 span="4" span__sm="12" span__md="12" padding="100% 0px 0px 0px" class="clickable-card tour-card"]';
             $shortcodes .= '[ux_html]';
             $shortcodes .= "<a href=\"{$category_link}\" class=\"clickable-card-link\"></a>";

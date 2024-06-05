@@ -26,7 +26,7 @@ function ls_create_tours() {
 		'publicly_queryable'  => true,
 		'query_var' 	      => true,
 		//TODO: Update rewrite to tours/%tour-category%
-		'rewrite'			  => array( 'slug' => 'tours/%tour-category%' ),
+		'rewrite'			  => array( 'slug' => '%tour-category%', 'with_front' => false ),
 		'capability_type'	  => 'post',	
 		'hierarchical'        => false,	
 		'supports'            => array( 'title', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'editor' ),
@@ -70,7 +70,7 @@ function ls_create_tour_taxonomies() {
 		'show_ui'           => true,
 		'show_admin_column' => true,
 		'query_var'         => true,
-		'rewrite'           => array( 'slug' => 'tour-category' ), 
+		'rewrite'           => array( 'slug' => '%tour-category%', 'with_front' => false ),
 		'show_in_rest' => true,
 	);
 
