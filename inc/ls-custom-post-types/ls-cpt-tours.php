@@ -1,5 +1,7 @@
 <?php
-// Register Tours Custom Post Type
+/*------------------------------------------------------------*\
+    Register 'Tours' Custom Post Type
+\*------------------------------------------------------------*/
 function ls_create_tours() {
     $labels = array(
         'name'                => 'Tours',
@@ -23,10 +25,10 @@ function ls_create_tours() {
         'description'         => 'Tours post type',
         'labels'              => $labels,
         'public'              => true,
-        'has_archive'         => false,
+        'has_archive'         => true,
         'publicly_queryable'  => true,
         'query_var'           => true,
-        'rewrite'             => array( 'slug' => 'tours/%tour-category%', 'with_front' => false ),
+        'rewrite'             => array( 'slug' => '/' ),
         'capability_type'     => 'post',
         'hierarchical'        => false,
         'supports'            => array( 'title', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'editor' ),
@@ -46,7 +48,9 @@ function ls_create_tours() {
 }
 add_action( 'init', 'ls_create_tours', 0 );
 
-// Register Tour Categories Taxonomy
+/*------------------------------------------------------------*\
+    Register 'Tour Categories' Taxonomy
+\*------------------------------------------------------------*/
 function ls_create_tour_taxonomies() {
     $labels = array(
         'name'              => _x( 'Tour Categories', 'taxonomy general name', 'textdomain' ),
@@ -63,29 +67,15 @@ function ls_create_tour_taxonomies() {
     );
 
     $args = array(
-        'hierarchical'      => true,
+        'hierarchical'      => false,
         'labels'            => $labels,
         'show_ui'           => true,
         'show_admin_column' => true,
         'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'tours', 'with_front' => false ),
+        'rewrite'           => array( 'slug' => '/', 'with_front' => false ),
         'show_in_rest'      => true,
     );
 
     register_taxonomy( 'tour-category', array( 'tours' ), $args );
 }
 add_action( 'init', 'ls_create_tour_taxonomies', 0 );
-
-// Adjust permalink structure for the custom post types
-function ls_tours_permalinks( $post_link, $post ) {
-    if ( is_object( $post ) && $post->post_type == 'tours' ) {
-        $terms = wp_get_object_terms( $post->ID, 'tour-category' );
-        if ( !is_wp_error( $terms ) && !empty( $terms ) ) {
-            return str_replace( '%tour-category%', $terms[0]->slug, $post_link );
-        } else {
-            return str_replace( '%tour-category%', 'uncategorized', $post_link );
-        }
-    }
-    return $post_link;
-}
-add_filter( 'post_type_link', 'ls_tours_permalinks', 1, 2 );
