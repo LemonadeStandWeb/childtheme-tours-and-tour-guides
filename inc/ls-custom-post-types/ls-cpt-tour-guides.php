@@ -1,5 +1,7 @@
 <?php
-// Register Tour Guides Custom Post Type
+/*------------------------------------------------------------*\
+    Register Tour Guides Custom Post Type
+\*------------------------------------------------------------*/
 function ls_create_tour_guides() {
     $labels = array(
         'name'                => 'Tour Guides',
@@ -23,10 +25,10 @@ function ls_create_tour_guides() {
         'description'         => 'Tour Guides post type',
         'labels'              => $labels,
         'public'              => true,
-        'has_archive'         => false,
+        'has_archive'         => true,
         'publicly_queryable'  => true,
         'query_var'           => true,
-        'rewrite'             => array( 'slug' => 'tour-guides', 'with_front' => false ),
+        'rewrite'             => array( 'slug' => '/', 'with_front' => false ),
         'capability_type'     => 'post',
         'hierarchical'        => false,
         'supports'            => array( 'title', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'editor' ),
@@ -46,7 +48,9 @@ function ls_create_tour_guides() {
 }
 add_action( 'init', 'ls_create_tour_guides', 0 );
 
-// Register Tour Guide Categories Taxonomy
+/*------------------------------------------------------------*\
+    Register Tour Guide Categories Taxonomy
+\*------------------------------------------------------------*/
 function ls_create_tour_guide_taxonomies() {
     $labels = array(
         'name'              => _x( 'Tour Guide Categories', 'taxonomy general name', 'textdomain' ),
@@ -68,7 +72,7 @@ function ls_create_tour_guide_taxonomies() {
         'show_ui'           => true,
         'show_admin_column' => true,
         'query_var'         => true,
-        'rewrite'           => array( 'slug' => 'tour-guide-category', 'with_front' => false ),
+        'rewrite'           => array( 'slug' => '/', 'with_front' => false ),
         'show_in_rest'      => true,
     );
 
